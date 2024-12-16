@@ -1,0 +1,740 @@
+{
+  "name": "CyberApp workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "9d15f85a-3356-46c9-a04f-8aef2b3c756c",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        820
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "43Ev8J5g427HLvxp",
+          "name": "OpenAi account G-services"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "ffa8ae96-d6fd-4372-877c-6bf3da0ca5e3",
+      "name": "OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1060,
+        800
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "43Ev8J5g427HLvxp",
+          "name": "OpenAi account G-services"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.data }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "=file_id",
+                "value": "={{ $('Set File ID').item.json.file_id }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "7d9e9acf-36ee-4a3c-8573-0b40c52f9c49",
+      "name": "Default Data Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        1300
+      ]
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {}
+      },
+      "id": "cc796865-d78a-4a15-9994-9813875a560f",
+      "name": "Embeddings OpenAI1",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        840,
+        1300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "43Ev8J5g427HLvxp",
+          "name": "OpenAi account G-services"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "user_documents",
+        "description": "Contains all the user's documents that you can check for context to answer user questions."
+      },
+      "id": "cee2def2-0268-4d89-9619-a23ee3d009c8",
+      "name": "Retrieve Documents",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        960,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Agent Tools for RAG",
+        "height": 461.2461869329576,
+        "width": 778.3614744323894,
+        "color": 4
+      },
+      "id": "1dc8dd32-6039-4e21-b8d3-e4b6dec03e5a",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        460,
+        527.6092777639724
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Tool to Add a Google Drive File to Vector DB",
+        "height": 671.8877842322804,
+        "width": 2070.8894079025763,
+        "color": 5
+      },
+      "id": "5aea5e1f-a71f-4526-94ae-ed5dc42ee483",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -760,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Set File ID').item.json.file_id }}",
+          "mode": "id"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "text/plain"
+            }
+          }
+        }
+      },
+      "id": "92c32f18-703c-45c7-89ef-0af324a5dc3c",
+      "name": "Download File",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        340,
+        1180
+      ],
+      "executeOnce": true,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "69tsypfa6IbdQhjO",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1fJVLMoKA4MwMEIPEBcyolgNbD0LoUajf",
+          "mode": "list",
+          "cachedResultName": "cyberapp resources",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1fJVLMoKA4MwMEIPEBcyolgNbD0LoUajf"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "id": "52cbe1be-e8a3-4b45-9457-38faf0c68205",
+      "name": "File Created",
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -700,
+        1080
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "69tsypfa6IbdQhjO",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1fJVLMoKA4MwMEIPEBcyolgNbD0LoUajf",
+          "mode": "list",
+          "cachedResultName": "cyberapp resources",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1fJVLMoKA4MwMEIPEBcyolgNbD0LoUajf"
+        },
+        "event": "fileUpdated",
+        "options": {}
+      },
+      "id": "46b6a399-dc6c-49d3-8711-f1f8d95eaef4",
+      "name": "File Updated",
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -700,
+        1300
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "69tsypfa6IbdQhjO",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "id": "76063b19-d5a6-4f5d-8d94-ec3461bc1d47",
+      "name": "Extract Document Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        600,
+        1180
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {}
+      },
+      "id": "78e62734-ac46-4485-9940-1e04655d840b",
+      "name": "Embeddings OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        820,
+        840
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "43Ev8J5g427HLvxp",
+          "name": "OpenAi account G-services"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "a6677aa2-19cf-4234-aa35-c46a5c3a01e3",
+      "name": "Postgres Chat Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1,
+      "position": [
+        120,
+        820
+      ],
+      "notesInFlow": false,
+      "credentials": {
+        "postgres": {
+          "id": "wYjTw48sOgcYTskV",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "509b832a-0281-49dd-a16c-152b721e6638",
+      "name": "Recursive Character Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        1500
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "documents",
+        "filterType": "string",
+        "filterString": "=metadata->>file_id=like.*{{ $json.file_id }}*"
+      },
+      "id": "f579eaa3-5ea3-4dc0-8569-080a2753bc91",
+      "name": "Delete Old Doc Rows",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        40,
+        1180
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "Bmbw2LkWlNroDHqG",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "10646eae-ae46-4327-a4dc-9987c2d76173",
+              "name": "file_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9a28189f-ab6b-4e95-bc93-ed60148f0d7c",
+      "name": "Set File ID",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -280,
+        1180
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## RAG AI Agent with Chat Interface",
+        "height": 464.8027193303974,
+        "width": 692.7866482806627
+      },
+      "id": "58d97aba-851e-4d74-b73a-e61a79e6ae93",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "tableName": {
+          "__rl": true,
+          "value": "documents_cyberapp",
+          "mode": "list",
+          "cachedResultName": "documents_cyberapp"
+        },
+        "options": {
+          "queryName": "match_documents_cyberapp"
+        }
+      },
+      "id": "2a7d1e85-9a07-4e83-86ca-f60bd41b415d",
+      "name": "Supabase Vector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        800,
+        720
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "Bmbw2LkWlNroDHqG",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents_cyberapp",
+          "mode": "list",
+          "cachedResultName": "documents_cyberapp"
+        },
+        "options": {
+          "queryName": "match_documents_cyberapp"
+        }
+      },
+      "id": "c5ff8409-ca8d-4c07-a367-3c7eea9748d2",
+      "name": "Insert into Supabase Vectorstore",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        880,
+        1080
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "Bmbw2LkWlNroDHqG",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "UpdateUserData",
+        "description": "Call this tool to update the user data",
+        "workflowId": {
+          "__rl": true,
+          "value": "MEYlnw8814xSpCNm",
+          "mode": "list",
+          "cachedResultName": "AI Registrar"
+        },
+        "fields": {
+          "values": [
+            {}
+          ]
+        },
+        "specifyInputSchema": true,
+        "jsonSchemaExample": "{\"name\":\"Stephen\",\n  \"website\": \"CyberAPP Solutions\",\n  \"email\":\"users@gmail.com\",\n\"Report\": \"If known\"}"
+      },
+      "id": "6ba436ec-b77f-48ba-ab77-bc0473a11950",
+      "name": "Registrar",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        320,
+        840
+      ]
+    },
+    {
+      "parameters": {
+        "toolDescription": "use this tool to know today's date",
+        "url": "https://www.calendardate.com/todays.htm",
+        "optimizeResponse": true,
+        "responseType": "html",
+        "cssSelector": "#ttop",
+        "truncateResponse": true
+      },
+      "id": "cf7370f0-a35b-44d5-93a6-42818aeec90d",
+      "name": "Get Todays date",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        440,
+        860
+      ]
+    },
+    {
+      "parameters": {
+        "name": "googlecalendartools",
+        "description": "call this tool to book event ",
+        "workflowId": {
+          "__rl": true,
+          "value": "fV6iyppXY6Duy3QC",
+          "mode": "list",
+          "cachedResultName": "Calendar Booking"
+        },
+        "specifyInputSchema": true,
+        "jsonSchemaExample": "{\"name\":\"Stephen\",\n  \"website\": \"CyberAPP Solutions\",\n  \"email\":\"users@gmail.com\",\n\"Description\": \"Reason for booking appointment\"\n,\n\"date\": \"date for the booking\"\n\n\n\n}"
+      },
+      "id": "6b2457b2-9efb-42a3-b345-30475fe28ce8",
+      "name": "Booking",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        560,
+        840
+      ]
+    },
+    {
+      "parameters": {
+        "public": true,
+        "mode": "webhook",
+        "options": {}
+      },
+      "id": "4183e549-c417-4539-a386-6b0ba961a113",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -180,
+        600
+      ],
+      "webhookId": "0adfe527-1801-41eb-9991-470cda93b022"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('When chat message received').item.json.chatInput }}",
+        "options": {
+          "systemMessage": "You are Jackyln, a dedicated and friendly sales assistant representing **CyberApp Solutions**, here to help users and customers with their inquiries. Begin every interaction by introducing yourself warmly and asking how you can assist them. When the user shares their inquiry, express gratitude for their question and repeat it back to ensure you understand their needs clearly.  \n\nIf you are uncertain whether the user’s name and email are already known, check if you’ve previously addressed them by name. If you cannot find earlier instances where you requested their email, assume it has already been asked. However, if their name and email are not on record, politely request this information. Explain that having these details ensures effective communication and follow-up.  \n\nWhen the user provides their name and email, confirm the information by repeating it back with the phrase: \"Thank you for providing your name and email. Let me confirm: [Name], [Email].\" Once confirmed, promptly save the details using the UpdateUserData tool before proceeding to address their inquiry.  \n\nIf the user asks about products or services, use the Retrieval tool to gather accurate information about **Cyber App Solutions** and provide the relevant details. Once the inquiry is addressed, aim to close the conversation by proposing to schedule a meeting. Politely ask for the user’s availability and arrange a meeting using Google Calendar to ensure seamless follow-up.  \n\nAvoid relying on your own knowledge for answers. Instead, let the user know their inquiry will be shared with your supervisor for a thorough follow-up. Throughout the interaction, address the user by their name to create a personalized and engaging experience. Always maintain a polite, professional tone, focusing on providing accurate, helpful responses while prioritizing the recording of user details, including their name, email, and reason for their inquiry, to ensure an efficient and effective follow-up process."
+        }
+      },
+      "id": "fce364de-4c5f-4380-bd8b-91a9765cbec9",
+      "name": "RAG AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        140,
+        600
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "RAG AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Retrieve Documents",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retrieve Documents": {
+      "ai_tool": [
+        [
+          {
+            "node": "RAG AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download File": {
+      "main": [
+        [
+          {
+            "node": "Extract Document Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File Created": {
+      "main": [
+        [
+          {
+            "node": "Set File ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Document Text": {
+      "main": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "RAG AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Old Doc Rows": {
+      "main": [
+        [
+          {
+            "node": "Download File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set File ID": {
+      "main": [
+        [
+          {
+            "node": "Delete Old Doc Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File Updated": {
+      "main": [
+        [
+          {
+            "node": "Set File ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Retrieve Documents",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar": {
+      "ai_tool": [
+        [
+          {
+            "node": "RAG AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Todays date": {
+      "ai_tool": [
+        [
+          {
+            "node": "RAG AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Booking": {
+      "ai_tool": [
+        [
+          {
+            "node": "RAG AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "RAG AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d40259fe-3bfb-41e7-9e01-bfa470d8f07c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c80fd93ffeab45a7c8f54ad34bbbd6ac8415e51b19a7c6dc98465f9a1df25af6"
+  },
+  "id": "RcpppJVxpIKAHFdv",
+  "tags": []
+}

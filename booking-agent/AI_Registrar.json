@@ -1,0 +1,172 @@
+{
+  "name": "AI Registrar",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "f20007ac-dd38-456d-b5ea-2da5c8506fc6",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        460,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1yfK-ILuqQMleRZDP-FBzdkdWf0Q46ds253DbsDbgyrE/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "sample sheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1yfK-ILuqQMleRZDP-FBzdkdWf0Q46ds253DbsDbgyrE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email": "={{ $json.query.email }}",
+            "Name": "={{ $json.query.name }}",
+            "Report": "={{ $json.query.Report }}",
+            "Website": "={{ $json.query.website }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "SessionId",
+              "displayName": "SessionId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Report",
+              "displayName": "Report",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9640a98c-5254-4d53-937c-495f3e96f829",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        680,
+        460
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Q0zA6R1Do7oDmLeV",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## AI Registrar tool\n",
+        "height": 238,
+        "width": 531
+      },
+      "id": "a904241c-e6d8-46de-99f0-85b6648dba0e",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        400,
+        380
+      ]
+    }
+  ],
+  "pinData": {
+    "Execute Workflow Trigger": [
+      {
+        "json": {
+          "query": {
+            "name": "some_value",
+            "email": "the email",
+            "Report": "Reason for messaging",
+            "website": "website"
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ef1b979e-1f77-4489-ba57-124e488e8a56",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c80fd93ffeab45a7c8f54ad34bbbd6ac8415e51b19a7c6dc98465f9a1df25af6"
+  },
+  "id": "MEYlnw8814xSpCNm",
+  "tags": []
+}

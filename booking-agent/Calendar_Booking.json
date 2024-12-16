@@ -1,0 +1,104 @@
+{
+  "name": "Calendar Booking",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "9f79bd40-336f-4814-89a5-e1eb201c230a",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        300,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "4cfc415a246d11c9883b8f92be375a2ec1d29aed01c040fe8a3946a9bfcdd028@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "G-serices Booking Calendar"
+        },
+        "start": "={{ $json.query.date }}",
+        "end": "2024-12-31T00:00:00",
+        "additionalFields": {
+          "attendees": [
+            "={{ $json.query.email }}"
+          ],
+          "description": "={{ $json.query.Description }} with {{ $json.query.name }} email: {{ $json.query.email }} time {{ $json.query.time }}",
+          "sendUpdates": "all"
+        }
+      },
+      "id": "2973d558-7ce6-4aa9-8fff-877894757d48",
+      "name": "Google Calendar",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.2,
+      "position": [
+        560,
+        220
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "Z17QdY2EfFcSNb2t",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Booking Event",
+        "height": 275,
+        "width": 525
+      },
+      "id": "b31fcec6-a2eb-43c8-83b7-7316233a28ac",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        240,
+        140
+      ]
+    }
+  ],
+  "pinData": {
+    "When clicking ‘Test workflow’": [
+      {
+        "json": {
+          "query": {
+            "name": "Stephen",
+            "website": "CyberAPP Solutions",
+            "email": "users@gmail.com",
+            "Description": "Reason for booking appointment",
+            "date": "date for the booking",
+            "time": "Booking time"
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Calendar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c1f17064-2892-43b5-b6c0-954a941f23cf",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c80fd93ffeab45a7c8f54ad34bbbd6ac8415e51b19a7c6dc98465f9a1df25af6"
+  },
+  "id": "fV6iyppXY6Duy3QC",
+  "tags": []
+}
